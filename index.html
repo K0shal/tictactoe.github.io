@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/79e4d5c120.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            overflow: hidden;
+            margin: 0;
+            box-sizing: box;
+            font-family: Arial;
+        }
+        
+        body {
+            background: #56baed;
+        }
+        
+        .game,
+        .board,
+        .result {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 5s ease;
+        }
+        
+        .game {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px 25px 25px;
+            border-radius: 5px;
+            max-width: 330px;
+            width: 100%;
+            transition: all .3s ease;
+        }
+        
+        .game.hide {
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        
+        .game .title {
+            font-size: 23px;
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .game .heading {
+            font-size: 18px;
+            font-weight: 500;
+            margin: 20px 0px;
+        }
+        
+        .game .option {
+            display: flex;
+            width: 100%;
+        }
+        
+        .game button {
+            width: 100%;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 8px 0px;
+            border: none;
+            outline: none;
+            background: #56baed;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .players.active span:first-child {
+            color: #56baed;
+        }
+        
+        .players.active span:nth-child(2) {
+            color: #fff;
+        }
+        
+        .players.active .slider {
+            left: 50%;
+        }
+        
+        .game button:hover,
+        .btn button:hover {
+            transform: scale(1.1);
+        }
+        
+        .game .buttonx {
+            margin-right: 5px;
+        }
+        
+        .game .buttono {
+            margin-left: 5px;
+        }
+        
+        .board .detail {
+            background: #fff;
+            padding: 7px;
+            border-radius: 5px;
+        }
+        
+        .board section {
+            display: flex;
+        }
+        
+        .board {
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        
+        .board.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1.3);
+        }
+        
+        .board section span {
+            display: block;
+            margin: 2px;
+            border-radius: 5px;
+            height: 80px;
+            width: 80px;
+            background: #fff;
+            font-size: 40px;
+            text-align: center;
+            line-height: 80px;
+            color: #56baed;
+        }
+        
+        .detail .players {
+            display: flex;
+            width: 100%;
+            position: relative;
+            justify-content: space-between;
+        }
+        
+        .detail span {
+            width: 100%;
+            border-radius: 5px;
+            padding: 7px 0px;
+            font-size: 19px;
+            font-weight: 500;
+            color: #56baed;
+            cursor: default;
+            text-align: center;
+            transition: all .3s ease;
+            position: relative;
+            z-index: 5;
+        }
+        
+        .detail span:first-child {
+            color: #fff;
+        }
+        
+        .playarea {
+            margin-top: 20px;
+        }
+        
+        .slider {
+            position: absolute;
+            background: #56baed;
+            top: 0px;
+            left: 0px;
+            height: 100%;
+            width: 50%;
+            transition: all .3s ease;
+            border-radius: 5px;
+            z-index: 2;
+        }
+        
+        .result {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 350px;
+            width: 100%;
+            display: none;
+        }
+        
+        .won {
+            font-size: 25px;
+            font-weight: 500;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .won p {
+            font-weight: 600px;
+            margin: 0px 6px;
+        }
+        
+        .result .btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .btn button {
+            font-size: 18px;
+            font-weight: 500;
+            padding: 8px 20px;
+            border: none;
+            outline: none;
+            background: #56baed;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game">
+        <div class="title">\\\\\\\\\\tic tac toe\\\\\\\\\\</div>
+        <div class="content">
+            <div class="heading">choice your character</div>
+            <div class="option">
+                <button class="buttonx">Player(x)</button>
+                <button class="buttono">player(y)</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="board">
+        <div class="detail">
+            <div class="players">
+                <span class="xturn">X's turn</span>
+                <span class="yturn">Y's turn</span>
+                <div class="slider"></div>
+            </div>
+
+        </div>
+        <div class="playarea">
+
+            <section>
+                <span class="box1"></span>
+                <span class="box2"></span>
+                <span class="box3"></span> </section>
+            <section>
+                <span class="box4"></span>
+                <span class="box5"></span>
+                <span class="box6"></span>
+            </section>
+            <section>
+
+                <span class="box7"></span>
+                <span class="box8"></span>
+                <span class="box9"></span>
+
+            </section>
+
+        </div>
+
+
+
+
+
+    </div>
+
+
+    <div class="result">
+        <div class="won">
+            PLAYER
+            <p> X </p> WIN</div>
+
+        <div class="btn">
+            <button>REPLAY</button>
+        </div>
+    </div>
+
+
+
+    <script>
+        const selectBox = document.querySelector(".game"),
+            selectxBtn = selectBox.querySelector(".buttonx"),
+            selectOBtn = selectBox.querySelector(".buttono"),
+            playBoard = document.querySelector(".board"),
+            allBox = document.querySelectorAll("section span"),
+            players = document.querySelector(".players");
+
+        window.onload = () => {
+            for (let i = 0; i < allBox.length; i++) {
+
+                allBox[i].setAttribute("onclick", "clickedBox(this)");
+            }
+            selectxBtn.onclick = () => {
+                selectBox.classList.add("hide");
+                playBoard.classList.add("show");
+            }
+            selectOBtn.onclick = () => {
+                selectBox.classList.add("hide");
+                playBoard.classList.add("show");
+                players.setAttribute("class", "players active player");
+            }
+        }
+        let playerXIcon = "fas fa-times";
+        let playerOIcon = "far fa-circle";
+        let playerSign = "X";
+
+        function clickedBox(element) {
+
+            if (players.classList.contains("player")) {
+                element.innerHTML = `<i class="${playerOIcon}"></i>`;
+                players.classList.add("active");
+            } else {
+                element.innerHTML = `<i class="${playerXIcon}"></i>`;
+                players.classList.add("active");
+            }
+            element.style.pointerEvents = "none";
+            let randomDelayTime = ((Math.random() * 1000) + 200).toFixed();
+            setTimeout(() => {
+                bot();
+            }, randomDelayTime);
+
+        }
+
+        function bot() {
+            let array = [];
+            for (let i = 0; i < allBox.length; i++) {
+                if (allBox[i].childElementCount == 0) {
+                    array.push(i);
+                }
+
+            }
+            let randomBox = array[Math.floor(Math.random() * array.length)];
+            if (array.length > 0) {
+
+                if (players.classList.contains("player")) {
+                    allBox[randomBox].innerHTML = `<i class="${playerXIcon}"></i>`;
+                    players.classList.remove("active");
+                } else {
+                    allBox[randomBox].innerHTML = `<i class="${playerOIcon}"></i>`;
+                    players.classList.remove("active");
+                }
+                allBox[randomBox].style.pointerEvents = "none";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
